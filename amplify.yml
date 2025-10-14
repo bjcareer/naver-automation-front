@@ -4,13 +4,17 @@ frontend:
     preBuild:
       commands:
         - npm ci
+        - echo "=== Cleaning dist folder to prevent stale files ==="
+        - rm -rf dist
     build:
       commands:
         - npm run build
-        - echo "=== Build completed, checking dist folder ==="
+        - echo "=== Build completed, verifying dist folder ==="
         - ls -la dist/
         - echo "=== Checking assets folder ==="
-        - ls -la dist/assets/ || echo "Assets folder not found!"
+        - ls -la dist/assets/
+        - echo "=== Verifying HTML references match built files ==="
+        - grep 'assets/index' dist/index.html
   artifacts:
     baseDirectory: dist
     files:
