@@ -30,7 +30,7 @@ export interface WriteAnswersRequest {
   naverId: string;
   naverPw: string;
   openaiApiKey: string;
-  promotionLink?: string;
+  promotionLink: string;
   systemMessage?: string;
   userPrompt?: string;
 }
@@ -56,7 +56,7 @@ export interface AccountFormData {
   naverId: string;
   naverPw: string;
   openaiApiKey: string;
-  promotionLink?: string;
+  promotionLink: string;
   systemMessage?: string;
   userPrompt?: string;
 }

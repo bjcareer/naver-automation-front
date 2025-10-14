@@ -22,7 +22,7 @@ const formSchema = z.object({
   naverId: z.string().min(1, '네이버 아이디를 입력하세요'),
   naverPw: z.string().min(1, '네이버 비밀번호를 입력하세요'),
   openaiApiKey: z.string().min(1, 'OpenAI API 키를 입력하세요'),
-  promotionLink: z.string().url('올바른 URL을 입력하세요').optional().or(z.literal('')),
+  promotionLink: z.string().url('올바른 URL을 입력하세요').min(1, '홍보 링크를 입력하세요'),
   systemMessage: z.string().optional(),
   userPrompt: z.string().optional(),
 });
@@ -150,46 +150,21 @@ export function AccountForm({ onSubmit, isSubmitting, selectedCount }: AccountFo
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="promotionLink"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="flex items-center gap-2">
-                    <Link className="w-4 h-4" />
-                    홍보 링크 (선택사항)
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="url"
-                      placeholder="https://example.com"
-                      {...field}
-                      disabled={isSubmitting}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    답변에 포함할 홍보 링크 (선택사항)
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* AI 커스텀 설정 섹션 */}
+            {/* AI 답변 설정 섹션 */}
             <div className="pt-6 border-t space-y-4">
               <div className="flex items-center gap-2 mb-4">
                 <Settings className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                 <h3 className="text-lg font-semibold text-purple-900 dark:text-purple-100">
-                  AI 답변 커스터마이징 (선택사항)
+                  AI 답변 설정
                 </h3>
               </div>
 
               <Alert className="border-purple-200 bg-purple-50 dark:bg-purple-950/30">
                 <MessageSquare className="h-4 w-4 text-purple-600 dark:text-purple-400" />
                 <AlertDescription className="text-purple-800 dark:text-purple-200 text-sm">
-                  AI가 답변을 생성할 때 사용할 시스템 메시지와 사용자 프롬프트를 커스터마이징할 수 있습니다.
+                  AI가 어떤 스타일로 답변할지 설정하고, 홍보 링크를 지정하세요.
                   <br />
-                  비워두면 기본 설정이 사용됩니다.
+                  답변 스타일을 비워두면 기본 설정이 사용됩니다.
                 </AlertDescription>
               </Alert>
 
@@ -200,18 +175,43 @@ export function AccountForm({ onSubmit, isSubmitting, selectedCount }: AccountFo
                   <FormItem>
                     <FormLabel className="flex items-center gap-2">
                       <Settings className="w-4 h-4" />
-                      시스템 메시지
+                      AI 답변 스타일 설정 (선택사항)
                     </FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="예: 당신은 네이버 지식iN에서 질문에 답변하는 친절하고 전문적인 AI 어시스턴트입니다."
+                        placeholder="예시:&#10;• 친근하고 편안한 말투로 답변해주세요&#10;• 전문가처럼 자세하게 설명해주세요&#10;• 간단명료하게 핵심만 답변해주세요"
                         className="min-h-[100px] resize-none"
                         {...field}
                         disabled={isSubmitting}
                       />
                     </FormControl>
                     <FormDescription>
-                      AI의 역할과 답변 스타일을 정의합니다 (System Prompt)
+                      AI가 어떤 스타일로 답변할지 자유롭게 작성하세요 (비워두면 기본 스타일 사용)
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="promotionLink"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2">
+                      <Link className="w-4 h-4" />
+                      답변에 포함할 홍보 링크
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="url"
+                        placeholder="https://example.com"
+                        {...field}
+                        disabled={isSubmitting}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      AI가 생성한 답변 끝에 자동으로 추가됩니다 (필수)
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -225,18 +225,18 @@ export function AccountForm({ onSubmit, isSubmitting, selectedCount }: AccountFo
                   <FormItem>
                     <FormLabel className="flex items-center gap-2">
                       <MessageSquare className="w-4 h-4" />
-                      사용자 프롬프트
+                      답변 추가 요청사항 (선택사항)
                     </FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="예: 위 질문에 대해 자세하고 이해하기 쉽게 답변해주세요."
+                        placeholder="예시:&#10;• 실제 경험담처럼 작성해주세요&#10;• 초보자도 이해하기 쉽게 설명해주세요&#10;• 구체적인 예시를 포함해서 답변해주세요"
                         className="min-h-[80px] resize-none"
                         {...field}
                         disabled={isSubmitting}
                       />
                     </FormControl>
                     <FormDescription>
-                      질문과 함께 전달될 추가 지침입니다 (User Prompt)
+                      답변에 추가로 반영해야 할 요청사항이 있다면 작성하세요 (선택사항)
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
