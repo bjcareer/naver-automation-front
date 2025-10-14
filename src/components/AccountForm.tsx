@@ -15,13 +15,12 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { User, Lock, Link, Info, MessageSquare, Settings } from 'lucide-react';
+import { User, Lock, Info, MessageSquare, Settings } from 'lucide-react';
 import type { AccountFormData } from '@/types';
 
 const formSchema = z.object({
   naverId: z.string().min(1, '네이버 아이디를 입력하세요'),
   naverPw: z.string().min(1, '네이버 비밀번호를 입력하세요'),
-  promotionLink: z.string().url('올바른 URL을 입력하세요').min(1, '홍보 링크를 입력하세요'),
   systemMessage: z.string().optional(),
   userPrompt: z.string().optional(),
 });
@@ -38,9 +37,8 @@ export function AccountForm({ onSubmit, isSubmitting, selectedCount }: AccountFo
     defaultValues: {
       naverId: '',
       naverPw: '',
-      promotionLink: '',
       systemMessage: '당신은 네이버 지식iN에서 질문에 답변하는 친절하고 전문적인 AI 어시스턴트입니다. 정확하고 유용한 정보를 제공하며, 한국어로 자연스럽게 답변합니다.',
-      userPrompt: '위 질문에 대해 자세하고 이해하기 쉽게 답변해주세요.',
+      userPrompt: '',
     },
   });
 
@@ -135,9 +133,9 @@ export function AccountForm({ onSubmit, isSubmitting, selectedCount }: AccountFo
               <Alert className="border-purple-200 bg-purple-50 dark:bg-purple-950/30">
                 <MessageSquare className="h-4 w-4 text-purple-600 dark:text-purple-400" />
                 <AlertDescription className="text-purple-800 dark:text-purple-200 text-sm">
-                  AI가 어떤 스타일로 답변할지 설정하고, 홍보 링크를 지정하세요.
+                  AI가 어떤 스타일로 답변할지 설정하세요.
                   <br />
-                  답변 스타일을 비워두면 기본 설정이 사용됩니다.
+                  비워두면 기본 설정이 사용됩니다.
                 </AlertDescription>
               </Alert>
 
@@ -168,48 +166,23 @@ export function AccountForm({ onSubmit, isSubmitting, selectedCount }: AccountFo
 
               <FormField
                 control={form.control}
-                name="promotionLink"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="flex items-center gap-2">
-                      <Link className="w-4 h-4" />
-                      답변에 포함할 홍보 링크
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        type="url"
-                        placeholder="https://example.com"
-                        {...field}
-                        disabled={isSubmitting}
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      AI가 생성한 답변 끝에 자동으로 추가됩니다 (필수)
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
                 name="userPrompt"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="flex items-center gap-2">
                       <MessageSquare className="w-4 h-4" />
-                      답변 추가 요청사항 (선택사항)
+                      홍보하고 싶은 내용을 작성해주세요 (선택사항)
                     </FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="예시:&#10;• 실제 경험담처럼 작성해주세요&#10;• 초보자도 이해하기 쉽게 설명해주세요&#10;• 구체적인 예시를 포함해서 답변해주세요"
-                        className="min-h-[80px] resize-none"
+                        placeholder="예시:&#10;• 실제 경험담처럼 작성해주세요&#10;• 초보자도 이해하기 쉽게 설명해주세요&#10;• 구체적인 예시를 포함해서 답변해주세요&#10;• 제 블로그(https://example.com)에서 더 많은 정보를 확인하실 수 있어요"
+                        className="min-h-[120px] resize-none"
                         {...field}
                         disabled={isSubmitting}
                       />
                     </FormControl>
                     <FormDescription>
-                      답변에 추가로 반영해야 할 요청사항이 있다면 작성하세요 (선택사항)
+                      답변에 추가로 반영할 내용이나 홍보하고 싶은 링크를 자유롭게 작성하세요
                     </FormDescription>
                     <FormMessage />
                   </FormItem>

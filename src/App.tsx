@@ -62,7 +62,6 @@ function App() {
         questions: selectedQuestions,
         naverId: accountData.naverId,
         naverPw: accountData.naverPw,
-        promotionLink: accountData.promotionLink,
         systemMessage: accountData.systemMessage,
         userPrompt: accountData.userPrompt,
       });
