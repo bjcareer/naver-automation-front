@@ -20,7 +20,7 @@ import type { SearchFormData } from '@/types';
 const formSchema = z.object({
   sortBy: z.enum(['keyword', 'latest']),
   keyword: z.string().optional(),
-  limit: z.coerce.number().min(1).max(50).optional().default(10),
+  limit: z.number().min(1).max(15).default(10),
 }).refine((data) => {
   if (data.sortBy === 'keyword' && !data.keyword) {
     return false;
@@ -37,10 +37,10 @@ interface SearchFormProps {
 }
 
 export function SearchForm({ onSubmit, isSubmitting }: SearchFormProps) {
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<SearchFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      sortBy: 'keyword',
+      sortBy: 'keyword' as const,
       keyword: '',
       limit: 10,
     },
