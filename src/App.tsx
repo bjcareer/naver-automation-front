@@ -6,7 +6,7 @@ import { ResultDisplay } from '@/components/ResultDisplay';
 import { searchQuestionsByKeyword, getLatestQuestions, writeAnswers } from '@/services/lambdaApi';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { AlertCircle, ArrowLeft, Sparkles, Info } from 'lucide-react';
+import { AlertCircle, ArrowLeft, Sparkles } from 'lucide-react';
 import type { SearchFormData, AccountFormData, QuestionDto, AnswerWriteResponse } from '@/types';
 
 type Step = 'search' | 'select' | 'account' | 'result';
@@ -62,8 +62,9 @@ function App() {
         questions: selectedQuestions,
         naverId: accountData.naverId,
         naverPw: accountData.naverPw,
-        openaiApiKey: accountData.openaiApiKey,
         promotionLink: accountData.promotionLink,
+        systemMessage: accountData.systemMessage,
+        userPrompt: accountData.userPrompt,
       });
 
       setResult(response);
@@ -108,7 +109,55 @@ function App() {
           </Alert>
         )}
 
-        {step === 'search' && <SearchForm onSubmit={handleSearch} isSubmitting={isSubmitting} />}
+        {step === 'search' && (
+          <>
+            {/* Hero Section */}
+            <div className="mb-8 p-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl shadow-xl text-white">
+              <div className="text-center space-y-4">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full mb-4">
+                  <Sparkles className="w-8 h-8" />
+                </div>
+                <h2 className="text-3xl font-bold">
+                  네이버 지식iN 자동 답변 등록 서비스
+                </h2>
+                <p className="text-lg text-white/90 max-w-2xl mx-auto">
+                  질문을 검색하고 선택하면, AI가 자동으로 답변을 생성하여 네이버 지식iN에 등록해드립니다
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 text-left">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                    <div className="font-semibold mb-2 flex items-center gap-2">
+                      <span className="text-2xl">1️⃣</span>
+                      질문 검색
+                    </div>
+                    <p className="text-sm text-white/80">
+                      키워드나 최신 질문으로 답변할 질문을 찾아보세요
+                    </p>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                    <div className="font-semibold mb-2 flex items-center gap-2">
+                      <span className="text-2xl">2️⃣</span>
+                      AI 답변 생성
+                    </div>
+                    <p className="text-sm text-white/80">
+                      OpenAI가 각 질문에 맞는 전문적인 답변을 자동 생성합니다
+                    </p>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                    <div className="font-semibold mb-2 flex items-center gap-2">
+                      <span className="text-2xl">3️⃣</span>
+                      자동 등록
+                    </div>
+                    <p className="text-sm text-white/80">
+                      생성된 답변을 네이버 지식iN에 자동으로 등록해드립니다
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <SearchForm onSubmit={handleSearch} isSubmitting={isSubmitting} />
+          </>
+        )}
 
         {step === 'select' && (
           <>

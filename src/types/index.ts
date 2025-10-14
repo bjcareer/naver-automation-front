@@ -29,7 +29,6 @@ export interface WriteAnswersRequest {
   questions: QuestionDto[];
   naverId: string;
   naverPw: string;
-  openaiApiKey: string;
   promotionLink: string;
   systemMessage?: string;
   userPrompt?: string;
@@ -55,7 +54,6 @@ export interface SearchFormData {
 export interface AccountFormData {
   naverId: string;
   naverPw: string;
-  openaiApiKey: string;
   promotionLink: string;
   systemMessage?: string;
   userPrompt?: string;

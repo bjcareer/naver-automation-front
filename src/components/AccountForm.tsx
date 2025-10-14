@@ -15,13 +15,12 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Key, User, Lock, Link, Info, MessageSquare, Settings } from 'lucide-react';
+import { User, Lock, Link, Info, MessageSquare, Settings } from 'lucide-react';
 import type { AccountFormData } from '@/types';
 
 const formSchema = z.object({
   naverId: z.string().min(1, '네이버 아이디를 입력하세요'),
   naverPw: z.string().min(1, '네이버 비밀번호를 입력하세요'),
-  openaiApiKey: z.string().min(1, 'OpenAI API 키를 입력하세요'),
   promotionLink: z.string().url('올바른 URL을 입력하세요').min(1, '홍보 링크를 입력하세요'),
   systemMessage: z.string().optional(),
   userPrompt: z.string().optional(),
@@ -39,7 +38,6 @@ export function AccountForm({ onSubmit, isSubmitting, selectedCount }: AccountFo
     defaultValues: {
       naverId: '',
       naverPw: '',
-      openaiApiKey: '',
       promotionLink: '',
       systemMessage: '당신은 네이버 지식iN에서 질문에 답변하는 친절하고 전문적인 AI 어시스턴트입니다. 정확하고 유용한 정보를 제공하며, 한국어로 자연스럽게 답변합니다.',
       userPrompt: '위 질문에 대해 자세하고 이해하기 쉽게 답변해주세요.',
@@ -119,31 +117,6 @@ export function AccountForm({ onSubmit, isSubmitting, selectedCount }: AccountFo
                   </FormControl>
                   <FormDescription>
                     네이버 계정 비밀번호 (안전하게 처리됩니다)
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="openaiApiKey"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="flex items-center gap-2">
-                    <Key className="w-4 h-4" />
-                    OpenAI API 키
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="sk-..."
-                      {...field}
-                      disabled={isSubmitting}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    AI 답변 생성에 사용할 OpenAI API 키
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
