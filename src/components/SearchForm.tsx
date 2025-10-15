@@ -20,7 +20,7 @@ import type { SearchFormData } from '@/types';
 const formSchema = z.object({
   sortBy: z.enum(['keyword', 'latest']),
   keyword: z.string().optional(),
-  limit: z.number().min(1).max(15).default(10),
+  limit: z.number().min(1).max(10).default(5),
 }).refine((data) => {
   if (data.sortBy === 'keyword' && !data.keyword) {
     return false;
@@ -42,7 +42,7 @@ export function SearchForm({ onSubmit, isSubmitting }: SearchFormProps) {
     defaultValues: {
       sortBy: 'keyword' as const,
       keyword: '',
-      limit: 10,
+      limit: 5,
     },
   });
 
@@ -132,13 +132,14 @@ export function SearchForm({ onSubmit, isSubmitting }: SearchFormProps) {
                     <Input
                       type="number"
                       min={1}
-                      max={50}
-                      {...field}
+                      max={10}
+                      value={field.value}
+                      onChange={(e) => field.onChange(parseInt(e.target.value) || 1)}
                       disabled={isSubmitting}
                     />
                   </FormControl>
                   <FormDescription>
-                    검색할 질문의 최대 개수 (1-50)
+                    검색할 질문의 최대 개수 (1-10)
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
