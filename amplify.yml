@@ -8,11 +8,13 @@ frontend:
         - rm -rf dist
     build:
       commands:
+        - echo "=== Setting NODE_ENV for production build ==="
+        - export NODE_ENV=production
         - npm run build
         - echo "=== Build completed, verifying dist folder ==="
         - ls -la dist/
-        - echo "=== Checking assets folder ==="
-        - ls -la dist/assets/
+        - echo "=== Checking assets folder and CSS file size ==="
+        - ls -lh dist/assets/
         - echo "=== Verifying HTML references match built files ==="
         - grep 'assets/index' dist/index.html
   artifacts:
