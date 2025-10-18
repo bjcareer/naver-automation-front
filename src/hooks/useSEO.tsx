@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet-async';
+import { useEffect } from 'react';
 
 export interface SEOProps {
   title?: string;
@@ -11,16 +11,17 @@ export interface SEOProps {
 }
 
 /**
- * SEO Component using react-helmet-async
+ * SEO Hook using native DOM manipulation
+ * Compatible with React 19
  *
  * Usage:
- * <SEO
- *   title="네이버 지식iN 자동화 도구"
- *   description="AI 기반 자동 답변 시스템"
- *   keywords={['네이버 지식인', '자동화', 'AI 답변']}
- * />
+ * useSEO({
+ *   title: '네이버 지식iN 자동화 도구',
+ *   description: 'AI 기반 자동 답변 시스템',
+ *   keywords: ['네이버 지식인', '자동화', 'AI 답변']
+ * })
  */
-export function SEO(props: SEOProps = {}) {
+export function useSEO(props: SEOProps = {}) {
   const {
     title = '네이버 지식iN 자동 답변 시스템 | AI 기반 자동 답변 등록 서비스',
     description = '네이버 지식iN 질문을 검색하고 AI가 자동으로 답변을 생성하여 등록합니다. 키워드 검색으로 원하는 질문을 찾고 OpenAI로 전문적인 답변을 작성하세요.',
@@ -43,32 +44,60 @@ export function SEO(props: SEOProps = {}) {
     ogImage = 'https://main.d2svn1j18zxxzl.amplifyapp.com/og-image.png'
   } = props;
 
-  return (
-    <Helmet>
-      {/* Primary Meta Tags */}
-      <title>{title}</title>
-      <meta name="title" content={title} />
-      <meta name="description" content={description} />
-      <meta name="keywords" content={keywords.join(', ')} />
+  useEffect(() => {
+    // Update document title
+    document.title = title;
 
-      {/* Open Graph / Facebook */}
-      <meta property="og:type" content="website" />
-      <meta property="og:url" content={canonicalUrl} />
-      <meta property="og:title" content={ogTitle} />
-      <meta property="og:description" content={ogDescription} />
-      <meta property="og:image" content={ogImage} />
-      <meta property="og:site_name" content="Naver KIN Auto Answer" />
-      <meta property="og:locale" content="ko_KR" />
+    // Helper function to update or create meta tag
+    const updateMetaTag = (name: string, content: string, isProperty = false) => {
+      const attribute = isProperty ? 'property' : 'name';
+      let element = document.querySelector(`meta[${attribute}="${name}"]`);
 
-      {/* Twitter */}
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:url" content={canonicalUrl} />
-      <meta name="twitter:title" content={ogTitle} />
-      <meta name="twitter:description" content={ogDescription} />
-      <meta name="twitter:image" content={ogImage} />
+      if (!element) {
+        element = document.createElement('meta');
+        element.setAttribute(attribute, name);
+        document.head.appendChild(element);
+      }
 
-      {/* Canonical URL */}
-      <link rel="canonical" href={canonicalUrl} />
-    </Helmet>
-  );
+      element.setAttribute('content', content);
+    };
+
+    // Update basic meta tags
+    updateMetaTag('title', title);
+    updateMetaTag('description', description);
+    updateMetaTag('keywords', keywords.join(', '));
+
+    // Update Open Graph tags
+    updateMetaTag('og:type', 'website', true);
+    updateMetaTag('og:url', canonicalUrl, true);
+    updateMetaTag('og:title', ogTitle, true);
+    updateMetaTag('og:description', ogDescription, true);
+    updateMetaTag('og:image', ogImage, true);
+    updateMetaTag('og:site_name', 'Naver KIN Auto Answer', true);
+    updateMetaTag('og:locale', 'ko_KR', true);
+
+    // Update Twitter Card tags
+    updateMetaTag('twitter:card', 'summary_large_image');
+    updateMetaTag('twitter:url', canonicalUrl);
+    updateMetaTag('twitter:title', ogTitle);
+    updateMetaTag('twitter:description', ogDescription);
+    updateMetaTag('twitter:image', ogImage);
+
+    // Update canonical link
+    let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.rel = 'canonical';
+      document.head.appendChild(canonical);
+    }
+    canonical.href = canonicalUrl;
+  }, [title, description, keywords, canonicalUrl, ogTitle, ogDescription, ogImage]);
+}
+
+/**
+ * Default SEO component for app-wide usage
+ */
+export function SEO(props: SEOProps = {}) {
+  useSEO(props);
+  return null;
 }
