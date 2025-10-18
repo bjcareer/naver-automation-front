@@ -7,6 +7,7 @@ import { searchQuestionsByKeyword, getLatestQuestions, writeAnswers } from '@/se
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { AlertCircle, ArrowLeft, Sparkles } from 'lucide-react';
+import { useSEO } from '@/hooks/useSEO';
 import type { SearchFormData, AccountFormData, QuestionDto, AnswerWriteResponse } from '@/types';
 
 type Step = 'search' | 'select' | 'account' | 'result';
@@ -19,6 +20,9 @@ function App() {
   const [result, setResult] = useState<AnswerWriteResponse | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // SEO optimization
+  const SEO = useSEO();
 
   const handleSearch = async (data: SearchFormData) => {
     setIsSubmitting(true);
@@ -91,6 +95,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      {SEO}
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <header className="mb-8 text-center">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
