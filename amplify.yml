@@ -10,7 +10,7 @@ frontend:
         - echo "NEXT_PUBLIC_USER_ID=$NEXT_PUBLIC_USER_ID" >> .env.production
         - npm run build
   artifacts:
-    baseDirectory: .
+    baseDirectory: .next
     files:
       - '**/*'
   cache:
