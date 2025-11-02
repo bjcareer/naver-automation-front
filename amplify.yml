@@ -6,6 +6,8 @@ frontend:
         - npm ci
     build:
       commands:
+        - echo "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL" >> .env.production
+        - echo "NEXT_PUBLIC_USER_ID=$NEXT_PUBLIC_USER_ID" >> .env.production
         - npm run build
   artifacts:
     baseDirectory: out
