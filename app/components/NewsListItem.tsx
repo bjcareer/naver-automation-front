@@ -27,7 +27,7 @@ export function NewsListItem({ news, featured = false }: NewsListItemProps) {
     return (
       <article className="group relative pb-8 border-b border-gray-200">
         <a
-          href={news.originalLink}
+          href={news.promotionLink}
           target="_blank"
           rel="noopener noreferrer"
           className="block"
@@ -87,7 +87,7 @@ export function NewsListItem({ news, featured = false }: NewsListItemProps) {
   return (
     <article className="group relative pb-8 border-b border-gray-100 last:border-0">
       <a
-        href={news.originalLink}
+        href={news.promotionLink}
         target="_blank"
         rel="noopener noreferrer"
         className="block"
