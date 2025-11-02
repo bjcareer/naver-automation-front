@@ -1,19 +1,22 @@
 version: 1
-frontend:
-  phases:
-    preBuild:
-      commands:
-        - npm ci
-    build:
-      commands:
-        - echo "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL" >> .env.production
-        - echo "NEXT_PUBLIC_USER_ID=$NEXT_PUBLIC_USER_ID" >> .env.production
-        - npm run build
-  artifacts:
-    baseDirectory: .next
-    files:
-      - '**/*'
-  cache:
-    paths:
-      - node_modules/**/*
-      - .next/cache/**/*
+applications:
+  - appRoot: .
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - npm ci
+        build:
+          commands:
+            - echo "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL" >> .env.production
+            - echo "NEXT_PUBLIC_USER_ID=$NEXT_PUBLIC_USER_ID" >> .env.production
+            - npm run build
+      artifacts:
+        baseDirectory: .next
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - node_modules/**/*
+          - .next/cache/**/*
+    platform: WEB_COMPUTE
