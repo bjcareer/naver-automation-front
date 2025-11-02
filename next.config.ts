@@ -1,18 +1,10 @@
-import type { NextConfig } from 'next'
+import type { NextConfig} from 'next'
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  output: 'export',
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'im.newspic.kr',
-      },
-      {
-        protocol: 'https',
-        hostname: '**.newspic.kr',
-      },
-    ],
+    unoptimized: true,
   },
 }
 
