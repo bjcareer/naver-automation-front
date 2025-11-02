@@ -6,6 +6,7 @@ export interface NewsLink {
   title: string
   originalLink: string
   promotionLink: string
+  ogImageUrl?: string  // OG image URL extracted from promotionLink (optional, backend should provide)
   summary: string
   source: string
   status: string

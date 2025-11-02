@@ -2,41 +2,15 @@
 
 import type { NewsLink } from '../lib/types'
 import { Calendar, ExternalLink } from 'lucide-react'
-import Image from 'next/image'
-import { useEffect, useState } from 'react'
 
 interface NewsListItemProps {
   news: NewsLink
   featured?: boolean
 }
 
-function useOgImage(promotionLink: string) {
-  const [imageUrl, setImageUrl] = useState<string | null>(null)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    const fetchOgImage = async () => {
-      try {
-        const response = await fetch(`/api/og-image?url=${encodeURIComponent(promotionLink)}`)
-        const data = await response.json()
-        if (data.imageUrl) {
-          setImageUrl(data.imageUrl)
-        }
-      } catch (error) {
-        console.error('Failed to fetch OG image:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchOgImage()
-  }, [promotionLink])
-
-  return { imageUrl, loading }
-}
-
 export function NewsListItem({ news, featured = false }: NewsListItemProps) {
-  const { imageUrl, loading } = useOgImage(news.promotionLink)
+  // Use ogImageUrl from backend, fallback to promotionLink
+  const imageUrl = news.ogImageUrl || news.promotionLink
 
   const formattedDate = new Date(news.createdAt).toLocaleDateString('ko-KR', {
     year: 'numeric',
@@ -68,17 +42,11 @@ export function NewsListItem({ news, featured = false }: NewsListItemProps) {
           <div className="grid lg:grid-cols-2 gap-8">
             {/* Image Preview */}
             <div className="relative aspect-[16/10] bg-gray-100 rounded-lg overflow-hidden">
-              {loading ? (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-8 h-8 border-4 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
-                </div>
-              ) : imageUrl ? (
-                <Image
+              {imageUrl ? (
+                <img
                   src={imageUrl}
                   alt={news.title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="absolute inset-0 w-full h-full object-cover"
                 />
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center text-gray-400">
@@ -127,17 +95,11 @@ export function NewsListItem({ news, featured = false }: NewsListItemProps) {
         <div className="flex gap-6">
           {/* Image Preview */}
           <div className="relative w-48 h-32 flex-shrink-0 bg-gray-100 rounded overflow-hidden">
-            {loading ? (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-6 h-6 border-4 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
-              </div>
-            ) : imageUrl ? (
-              <Image
+            {imageUrl ? (
+              <img
                 src={imageUrl}
                 alt={news.title}
-                fill
-                className="object-cover"
-                sizes="192px"
+                className="absolute inset-0 w-full h-full object-cover"
               />
             ) : (
               <div className="absolute inset-0 flex items-center justify-center text-sm text-gray-400">

@@ -10,10 +10,9 @@ frontend:
         - echo "NEXT_PUBLIC_USER_ID=$NEXT_PUBLIC_USER_ID" >> .env.production
         - npm run build
   artifacts:
-    baseDirectory: .next
+    baseDirectory: out
     files:
       - '**/*'
   cache:
     paths:
       - node_modules/**/*
-      - .next/cache/**/*
